@@ -16,11 +16,11 @@ $chat=$_POST["chat"];
   $chatsanit=filter_var($chat, FILTER_SANITIZE_STRING);
 
 if(isset($_POST["chat"]) && isset(($_POST["send"]))){
-  $req = $db->prepare('INSERT INTO messages (pseudo, send) VALUES (:pseudosanit,:mailsanit,)');
+  $req = $db->prepare('INSERT INTO messages (pseudo, send) VALUES (:pseudosanit,:chatsanit,)');
   $req->execute(array(
       'pseudosanit' => $pseudosanit,
-      'mailsanit' => $mailsanit,
-  ));  $req->execute(array($_POST['pseudo'], $_POST['chat']));
+      'chatsanit' => $chatsanit,
+  )); 
 
 }
 //Affiche les 7 derniers messages
