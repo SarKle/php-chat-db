@@ -1,20 +1,41 @@
+<?php
+try {
+  $bd = new PDO('mysql:host=localhost;dbname=chat;charset=utf8', 'root', 'root');
+}
+catch (Exception $e) {
+  // En cas d'erreur, on affiche un message et on arrête tout
+  die('Erreur : '.$e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel"stylesheet" href="style.css">
-  <title>SACHAT</title>
+  <title>CHAT</title>
 </head>
+
 <body>
+  <h2>Login</h2>
+ <form action="login.php" method="post">
+  <label for "pseudo">Pseudo:</label>
+    <input type="text" name"=pseudo" placeholder="pseudo"> <br>
+  <label for "password">Password:</label>
+    <input type="password" name"=password" placeholder="password"> <br>
+  <input type=submit name="submit" value="login">
+ </form>
 
-<h1>SACHAT</h1>
-  <iframe url="conversation.php" width="800" height="600" name="frameConversation" scrolling="yes"> </iframe>
-    <form action="index.php" method="post">
-      <input type="text" name="chat"/>
-      <input type="submit" name="send" value="send"/>
-    </form>
-
+ <form action="signup.php" method="post">
+   <h2>Pas encore inscrit?</h2>
+     <label for "pseudo"> Pseudo: </label>
+     <input type="text" name"=pseudo" placeholder="pseudo"> <br>
+     <label for "email"> Email: </label>
+     <input type="text" name"=email" placeholder="email"> <br>
+     <label for "password">Password:</label>
+     <input type="password" name"=password" placeholder="password"> <br>
+     <input type=submit name="submit" value="signUp">
+  </form>
 </body>
 </html>
