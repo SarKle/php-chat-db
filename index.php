@@ -26,7 +26,7 @@ if(isset($_POST['login']) AND !empty($_POST["pseudo"]) AND !empty($_POST["passwo
       header("Location:chat.php");
  }
    else{
-     echo "Veuillez vous inscrire";
+     echo "VEUILLEZ VOUS INSCRIRE";
    }
 }
 ?>
