@@ -27,6 +27,7 @@ if(isset($_POST["submit"])){
             $pseudo,$email,$password
           ));
           header("Location:index.php");
+
     }
   }
 }
