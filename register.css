@@ -1,0 +1,17 @@
+body{
+  background-image: url("register.jpg");
+  background-repeat: repeat;
+}
+
+h1{
+  color: white;
+}
+
+.enregistrer{
+  background-color: white;
+  width: 600px;
+  height: 200px;
+  line-height: 50px;
+  padding-top: 20px;
+  padding-left: 20px;
+}

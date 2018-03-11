@@ -1,40 +1,36 @@
 <?php
-$pseudo = ($_POST['pseudo']);
-$email = ($_POST['email']);
-$password = ($_POST['password']);
-  $_POST['pseudo'] = filter_var($_POST['pseudo'],FILTER_SANITIZE_STRING);
-  $_POST['password'] = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
-  $_POST['email'] = filter_var($_POST['email'],FILTER_SANITIZE_STRING);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if(isset($_POST['submit']) && !empty($_POST['pseudo']) && !empty($_POST['password']) && !empty($_POST['email'])){
-  global $db;
-    $newpseudo = $db->prepare('SELECT * FROM users WHERE pseudo = ?');
-    $newpseudo->execute(array($pseudo));
-    $pseudoin = $newpseudo->rowcount();
-    $newmail = $db->prepare('SELECT * FROM users WHERE email = ?');
-    $newmail->execute(array($email));
-    $emailin = $newmail->rowcount();
+try{
+//Connexion à mysql
+  $db = new PDO('mysql:host=localhost;dbname=chat;charset=utf8', 'root', 'root');
+}
+catch(Exception $e){
+// Si erreur, stop le script
+die('Erreur : '.$e->getMessage());
+}
 
-  if($pseudoin == 0){
-    if($emailin == 0){
-      $info= $db->prepare("INSERT INTO users (pseudo, email, password) VALUES ('".$pseudo."', '".$email."','".$password."')");
-      $info->execute(array(
-        "username" => $pseudo,
-        "password" => $password,
-        "email" => $email));
-          header('location: index.php');
-    }
-    else {
-      $error = "Cette adresse email existe déjà!";
+if(isset($_POST["submit"])){
+  if(isset($_POST["pseudo"],$_POST["email"],$_POST["password"])){
+    if(!empty($_POST['email']) AND !empty($_POST["pseudo"]) AND !empty($_POST['password'])){
+        $pseudo =htmlspecialchars ($_POST['pseudo']);
+        $email = htmlspecialchars($_POST['email']);
+        $password = htmlspecialchars($_POST['password']);
+          $_POST['pseudo'] = filter_var($_POST['pseudo'],FILTER_SANITIZE_STRING);
+          $_POST['password'] = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+          $_POST['email'] = filter_var($_POST['email'],FILTER_VALIDATE_EMAIL);
+
+        $newuser=$db->prepare("INSERT INTO users (pseudo,email,password) VALUES (?,?,?)");
+          $newuser->execute(array(
+            $pseudo,$email,$password
+          ));
+          header("Location:index.php");
     }
   }
-  else {
-    $error = "Ce pseudo existe déjà!";
-  }
 }
-else {
-  $error = "Veuillez compléter le formulaire!";
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +39,7 @@ else {
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="style.css"/>
+<link rel="stylesheet" type="text/css" href="register.css"/>
 <title>INSCRIPTION</title>
 </head>
 <body>
@@ -53,12 +49,11 @@ else {
         <form method="post" action="register.php">
           <div class="email">
             EMAIL:
-                <input type="text" name="email" placeholder="Insérez votre adresse email" required
-            value=<?php if(isset($email)) {echo($email); }?>></br>
-        </div>
+                <input type="text" name="email" placeholder="Insérez votre adresse email" required>
+          </div>
           <div class="pseudo">
             PSEUDO:
-              <input type="text" name="pseudo" placeholder="Choisissez un nom d'utilisateur" value=<?php if(isset($username)){ echo($username); }?>></br>
+              <input type="text" name="pseudo" placeholder="Choisissez un nom d'utilisateur">
           </div>
           <div class="password">
             PASSWORD:
@@ -70,6 +65,7 @@ else {
         <input type="submit" name="submit" value="ENREGISTRER">
       </div>
         </form>
+        <?php if(isset($_GET['error'])){echo $_GET['error'];} ?>
   </section>
 </body>
 </html>
