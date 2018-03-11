@@ -2,7 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
 try{
 //Connexion à mysql
   $db = new PDO('mysql:host=localhost;dbname=chat;charset=utf8', 'root', 'root');
@@ -11,7 +10,6 @@ catch(Exception $e){
 // Si erreur, stop le script
 die('Erreur : '.$e->getMessage());
 }
-
 if(isset($_POST["submit"])){
   if(isset($_POST["pseudo"],$_POST["email"],$_POST["password"])){
     if(!empty($_POST['email']) AND !empty($_POST["pseudo"]) AND !empty($_POST['password'])){
@@ -21,17 +19,14 @@ if(isset($_POST["submit"])){
           $_POST['pseudo'] = filter_var($_POST['pseudo'],FILTER_SANITIZE_STRING);
           $_POST['password'] = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
           $_POST['email'] = filter_var($_POST['email'],FILTER_VALIDATE_EMAIL);
-
         $newuser=$db->prepare("INSERT INTO users (pseudo,email,password) VALUES (?,?,?)");
           $newuser->execute(array(
             $pseudo,$email,$password
           ));
           header("Location:index.php");
-
     }
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +58,7 @@ if(isset($_POST["submit"])){
 
       </div>
       <div class="send">
-        <input type="submit" name="submit" value="ENREGISTRER">
+        <input type="submit" name="submit" value="ENREGISTRER"> 
       </div>
         </form>
         <?php if(isset($_GET['error'])){echo $_GET['error'];} ?>

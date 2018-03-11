@@ -1,12 +1,20 @@
 <?php
-session_start();
-
-if(isset($_POST['logout'])){
-  session_unset();
-  session_destroy();
-  header('Location: index.php');
+try{
+	//Connexion à mysql
+  $db = new PDO('mysql:host=localhost;dbname=chat;charset=utf8', 'root', 'root');
 }
+catch(Exception $e){
+// Si erreur, stop le script
+die('Erreur : '.$e->getMessage());
+  }
 
+  if(isset($_POST['send']) AND isset($_POST['mesg']) AND !empty($_POST['mesg'])){
+    $message=htmlspecialchars($_POST['mesg']);
+      $insertmess=$db->prepare('INSERT INTO messages (send)VALUES (?)');
+        $insertmess->execute(array(
+          $message
+        ));
+  }
 ?>
 
 <!DOCTYPE html>
@@ -23,12 +31,18 @@ if(isset($_POST['logout'])){
   <div class="chat">
     <h1>BIENVENUE SUR MYCHAT <?$_SESSION['pseudo']?> !</h1>
   </div>
-  <iframe id="conv" src="conversation.php" frameborder="1" width="900" height="600" scrolling="yes">   </iframe>
+  <iframe id="conv" frameborder="1" width="900" height="600" scrolling="yes">
+    <?php $allmsg=$db->query("SELECT * FROM messages ");
+    while ($msg=$allmsg->fetch()) {
+    }?>
+    <?php echo $msg["pseudo"]?>: <?php echo $msg["mesg"] ?>
+  </iframe>
     <div class="message">
       <div class="send">
           <form method="post" action="chat.php">
-            <input type="textarea" name="message" placeholder="Votre message...">
+            <input type="textarea" name="mesg" placeholder="Votre message..." value="">
             <input type="submit" name="send" value="ENVOYER">
+
             <input type="submit" name="logout" value="LOGOUT">
           </form>
 
