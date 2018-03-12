@@ -41,7 +41,7 @@ include"conversation.php";
             <input type="submit" name="logout" value="LOGOUT">
       </div>
 
-            <iframe id="conv" src="conversation.php" frameborder="1" width="900" height="600" scrolling="yes">
+            <iframe id="conv" src="conversation.php" frameborder="1" width="900" height="600" scrolling="yes" style=background:#FFFFFF;">
 
             <iframe>"
 
