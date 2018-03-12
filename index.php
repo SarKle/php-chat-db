@@ -1,7 +1,10 @@
 <?php
+session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 try{
 //Connexion à mysql
   $db = new PDO('mysql:host=localhost;dbname=chat;charset=utf8', 'root', 'root');
@@ -18,9 +21,9 @@ if(isset($_POST['login']) AND !empty($_POST["pseudo"]) AND !empty($_POST["passwo
 //si une ligne retournée
    if($recup_user->rowcount()==1){
     $info_user=$recup_user->fetch();
-      echo $info_user['pseudo'];
-      $_SESSION['pseudo']=$info_user[0]['pseudo'];
-      $_SESSION['id']=$info_user[0]['id'];
+      echo $info_user;
+      $_SESSION['pseudo']=$info_user['pseudo'];
+      $_SESSION['id']=$info_user['id'];
       $_SESSION['password']=$info_user['password'];
 
       header("Location:chat.php");
@@ -41,6 +44,7 @@ if(isset($_POST['login']) AND !empty($_POST["pseudo"]) AND !empty($_POST["passwo
 <title>SE CONNECTER MYCHAT</title>
 </head>
 <body>
+  <?php var_dump($_SESSION); ?>
   <h1>SE CONNECTER AU CHAT</h1>
   <form method="post" action="index.php">
     <div class="register">

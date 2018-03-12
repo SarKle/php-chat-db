@@ -28,6 +28,7 @@ include"conversation.php";
   <title>MYCHAT</title>
 </head>
 <body>
+  <?php var_dump($_SESSION); ?>
 <div class="chat">
   <div class="chat">
     <h1>BIENVENUE SUR MYCHAT !</h1>
@@ -39,7 +40,7 @@ include"conversation.php";
             <input type="submit" name="send" value="ENVOYER">
             <input type="submit" name="logout" value="LOGOUT">
       </div>
-      
+
             <iframe id="conv" src="conversation.php" frameborder="1" width="900" height="600" scrolling="yes">
 
             <iframe>"
